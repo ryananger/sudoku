@@ -19,8 +19,8 @@ const Board = function() {
 
   const info = {
     3: 'Each number (1 - 9) is used one time.',
-    4: 'Each number is used up to 2 times. Unique solution not guaranteed.',
-    5: 'Each number is used up to 3 times. Unique solution not guaranteed.'
+    4: 'Each number is used up to 2 times. No number occurs twice in the same row or column.',
+    5: 'Each number is used up to 3 times. No number occurs twice in the same row or column.'
   };
 
   var mountBoard = st.mountBoard = function(n) {
@@ -143,7 +143,7 @@ const Board = function() {
 
   return (
     <>
-    <small className='gameInfo'>{info[size]}</small>
+    <small className='gameInfo'>{info[size]}<br/><br/>Unique solution is not guaranteed.</small>
     <div id='tiles' className='tiles h' style={{width: size * tileSize + 'px'}}>
       {board && renderBoard()}
       {renderSums()}
