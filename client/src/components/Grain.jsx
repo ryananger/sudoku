@@ -1,11 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import st from 'ryscott-st';
 
 import grainPath from './grainPath.js';
 
 const Grain = function() {
-  const slice = Math.floor(Math.random() * (450 - st.tileSize));
+  const [slice] = useState(Math.floor(Math.random() * (450 - st.tileSize)));
   const style = {top: -slice + 'px', left: -slice + 'px'};
 
   return (

@@ -12,6 +12,7 @@
   --lightText: rgb(255, 232, 217);
   --trCream: rgba(255, 232, 217, 0.747);
   --darkText: #3d1a15;
+  --solveText: #3d1a1580;
 
   --shadow: #39161096;
 }
@@ -27,11 +28,8 @@ html, body, #root, .app {
   height: 100%;
   width: 100%;
   font-family: Jost;
-
-  background: radial-gradient(circle at bottom left, #c2edba, transparent 40%),
-              radial-gradient(circle at top right, #edddba9e, transparent);
-
-  background-color: var(--bg);
+  background: radial-gradient(circle at bottom left, #d9baed66, transparent 20%), radial-gradient(circle at top right, #edddba9e, transparent);
+  background-color: #f9cde2;
   color: var(--darkText);
 }
 
@@ -110,13 +108,19 @@ a:visited {
   position: relative;
 }
 
+@media (max-width: 720px) {
+  .tiles {
+    left: -10px;
+  }
+}
+
 .tileContainer {
   aspect-ratio: 1;
   padding: 0;
   position: absolute;
   transition: top 0.25s cubic-bezier(0.14, 0.92, 0.87, 1), left 0.25s cubic-bezier(0.14, 0.92, 0.87, 1);
   user-select: none;
-  cursor: pointer;
+  cursor: text;
 }
 
 .tile {
@@ -133,6 +137,28 @@ a:visited {
   overflow: hidden;
 }
 
+input {
+  background: transparent;
+  border: none;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  font-family: 'Jost';
+  font-size: 24px;
+  outline: none;
+  color: var(--darkText) !important;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 .woodgrain {
   pointer-events: none;
   user-select: none;
@@ -141,6 +167,23 @@ a:visited {
 
 .woodgrain path {
   fill: #d1949452;
+}
+
+.rSum,
+.bSum {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  justify-content: center;
+}
+
+.rSum {
+  right: -40px;
+}
+
+.bSum {
+  bottom: -40px;
 }
 
 /* BUTTONS */
@@ -156,7 +199,7 @@ a:visited {
   text-align: center;
   justify-content: center;
   margin: 0 4px;
-  border: 1px solid #80ad6e;
+  border: 1px solid #ad6e8f85;
   border-radius: 4px;
   user-select: none;
 }

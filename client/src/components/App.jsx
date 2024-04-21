@@ -7,20 +7,21 @@ import {mouse} from 'util';
 import Board from './Board.jsx';
 
 const isMobile = window.innerWidth < 720;
-const tileSize = st.tileSize = isMobile ? 60 : 80;
+const tileSize = st.tileSize = isMobile ? Math.floor(window.innerWidth/6.5) : 80;
 
 const App = function() {
   var renderHead = function() {
     return (
       <>
-      {!isMobile && <small>press M to mix, and 3, 4, or 5 to set the size</small>}
+      {!isMobile && <small>press R to reset, 3, 4, or 5 to set the size, and S to see the solution (this clears the board!)</small>}
       {isMobile &&
         <small className='buttons h'>
-          <div className='button v' onClick={()=>{st.mountBoard(st.size)}}>mix</div>
+          <div className='button v' onClick={()=>{st.mountBoard(st.size)}}>reset</div>
+          <div className='button v' onClick={()=>{st.setSolve(!st.solve)}}>solution</div>
           <div className='h'>
-            <div className='button v' onClick={()=>{st.mountBoard(3)}}>8</div>
-            <div className='button v' onClick={()=>{st.mountBoard(4)}}>15</div>
-            <div className='button v' onClick={()=>{st.mountBoard(5)}}>24</div>
+            <div className='button v' onClick={()=>{st.mountBoard(3)}}>3</div>
+            <div className='button v' onClick={()=>{st.mountBoard(4)}}>4</div>
+            <div className='button v' onClick={()=>{st.mountBoard(5)}}>5</div>
           </div>
         </small>
       }

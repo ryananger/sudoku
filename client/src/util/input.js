@@ -22,10 +22,13 @@ window.addEventListener('mousemove', function(e) {
 }, {passive: true});
 
 window.addEventListener('keypress', function(e) {
-  if (e.target.type === 'text') {return;}
+  if (e.target.type === 'number') {return;}
 
   switch (e.key) {
-    case 'm':
+    case 's':
+      st.setSolve(true);
+      break;
+    case 'r':
       st.mountBoard();
       break;
     case '3':
@@ -36,6 +39,16 @@ window.addEventListener('keypress', function(e) {
       break;
     case '5':
       st.mountBoard(5);
+      break;
+  }
+});
+
+window.addEventListener('keyup', function(e) {
+  if (e.target.type === 'number') {return;}
+
+  switch (e.key) {
+    case 's':
+      st.setSolve(false);
       break;
   }
 });
