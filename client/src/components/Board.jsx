@@ -17,17 +17,57 @@ const Board = function() {
 
   const tileSize = st.tileSize;
 
+  const info = {
+    3: 'Each number (1 - 9) is used one time.',
+    4: 'Each number is used up to 2 times. Unique solution not guaranteed.',
+    5: 'Each number is used up to 3 times. Unique solution not guaranteed.'
+  };
+
   var mountBoard = st.mountBoard = function(n) {
     var sz = n || size;
     var b = [];
 
     var newSums = {};
+    var rows = [];
+    var cols = [];
+    var str = '';
 
     for (let i = 0; i < sz; i++) {
       b[i] = [];
 
+      let brick;
+
+      if (sz > 3) {
+        brick = helpers.rand(sz);
+      }
+
       for (let j = 0; j < sz; j++) {
+        if (!cols[i]) {
+          cols[i] = '';
+        }
+
+        if (!rows[j]) {
+          rows[j] = '';
+        }
+
+        if (brick === j) {
+          b[i][j] = 'brick';
+          continue;
+        }
+
         var num = helpers.rand(9) + 1;
+
+        if (cols[i].includes(num) ||
+            rows[j].includes(num) ||
+            sz === 3 && str.includes(num) ||
+            str.split(num)[sz - 2]) {
+          j--;
+          continue;
+        } else {
+          cols[i] += num;
+          rows[j] += num;
+          str += num;
+        }
 
         if (!newSums['r' + i]) {
           newSums['r' + i] = num;
@@ -61,7 +101,9 @@ const Board = function() {
         let coords = {x: j, y: i};
         let spoil = false;
 
-        if (spoiled.indexOf((size * i) + j) !== -1) {
+        let chk = spoiled.indexOf((size * i) + j);
+
+        if (chk !== -1) {
           spoil = true;
         }
 
@@ -100,10 +142,14 @@ const Board = function() {
   useEffect(()=>{}, [board]);
 
   return (
+    <>
+    <small className='gameInfo'>{info[size]}</small>
     <div id='tiles' className='tiles h' style={{width: size * tileSize + 'px'}}>
       {board && renderBoard()}
       {renderSums()}
     </div>
+    </>
+
   );
 };
 

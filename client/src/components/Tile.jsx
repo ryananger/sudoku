@@ -8,9 +8,30 @@ const Tile = function({spoil, coords}) {
   const [board, setBoard] = st.handleBoard;
   const [{x, y}, setPos] = useState(coords);
   const [num, setNum] = useState(board[y]?.[x]);
+  const [val, setVal] = useState('');
 
   const tileSize = st.tileSize;
   const style = {top: y * tileSize + 'px', left: x * tileSize + 'px'};
+
+  var handleChange = function(e) {
+    if (Number(e.target.value)) {
+      setVal(e.target.value);
+    }
+  };
+
+  var handleTile = function() {
+    if (num === 'brick') {
+      return <div className='tile brick'><Grain/></div>;
+    } else {
+      return (
+        <div className='tile v' style={!spoil && st.solve ? {color: 'var(--solveText)'} : {}}>
+          <Grain/>
+          {(spoil || st.solve) && num}
+          {(!spoil && !st.solve) && <input type='number' value={val} onChange={handleChange}/>}
+        </div>
+      )
+    }
+  };
 
   useEffect(()=>{
     setPos(coords);
@@ -21,11 +42,7 @@ const Tile = function({spoil, coords}) {
 
   return (
     <div className='tileContainer v' style={{...style, width: tileSize + 'px'}}>
-      <div className='tile v' style={st.solve ? {color: 'var(--solveText)'} : {}}>
-        <Grain/>
-        {(spoil || st.solve) && num}
-        {(!spoil && !st.solve) && <input type='number'/>}
-      </div>
+      {handleTile()}
     </div>
   );
 };

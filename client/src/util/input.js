@@ -28,7 +28,7 @@ window.addEventListener('keypress', function(e) {
     case 's':
       st.setSolve(true);
       break;
-    case 'r':
+    case 'n':
       st.mountBoard();
       break;
     case '3':

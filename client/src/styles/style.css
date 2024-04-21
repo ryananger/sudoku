@@ -97,6 +97,13 @@ a:visited {
 
 /* BOARD */
 
+.gameInfo {
+  position: absolute;
+  top: 72px;
+  max-width: 90svw;
+  text-align: center;
+}
+
 .tiles {
   padding: 0;
   justify-content: space-between;
@@ -137,6 +144,15 @@ a:visited {
   overflow: hidden;
 }
 
+.brick {
+  background: #c7a6aa;
+  box-shadow: 0 2px 0 0 #9d7b7b;
+}
+
+.brick .woodgrain path {
+  fill: var(--trCream);
+}
+
 input {
   background: transparent;
   border: none;
@@ -163,6 +179,7 @@ input[type=number] {
   pointer-events: none;
   user-select: none;
   position: absolute;
+  transform-origin: center;
 }
 
 .woodgrain path {

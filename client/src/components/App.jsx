@@ -13,10 +13,10 @@ const App = function() {
   var renderHead = function() {
     return (
       <>
-      {!isMobile && <small>press R to reset, 3, 4, or 5 to set the size, and S to see the solution (this clears the board!)</small>}
+      {!isMobile && <small>press N for a new puzzle, 3, 4, or 5 to set the size, and S to see the solution.</small>}
       {isMobile &&
         <small className='buttons h'>
-          <div className='button v' onClick={()=>{st.mountBoard(st.size)}}>reset</div>
+          <div className='button v' onClick={()=>{st.mountBoard(st.size)}}>new</div>
           <div className='button v' onClick={()=>{st.setSolve(!st.solve)}}>solution</div>
           <div className='h'>
             <div className='button v' onClick={()=>{st.mountBoard(3)}}>3</div>
