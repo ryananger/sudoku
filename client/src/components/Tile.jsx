@@ -15,7 +15,11 @@ const Tile = function({spoil, coords}) {
 
   var handleChange = function(e) {
     if (Number(e.target.value)) {
-      setVal(e.target.value);
+      setVal(e.target.value.slice(e.target.value.length - 1));
+    }
+
+    if (e.key === 'Backspace') {
+      setVal('');
     }
   };
 
@@ -27,7 +31,7 @@ const Tile = function({spoil, coords}) {
         <div className='tile v' style={!spoil && st.solve ? {color: 'var(--solveText)'} : {}}>
           <Grain/>
           {(spoil || st.solve) && num}
-          {(!spoil && !st.solve) && <input type='number' value={val} onChange={handleChange}/>}
+          {(!spoil && !st.solve) && <input type='number' value={val} onChange={handleChange} onKeyUp={handleChange}/>}
         </div>
       )
     }
