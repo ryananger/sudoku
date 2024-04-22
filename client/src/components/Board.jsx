@@ -2,94 +2,48 @@ import React, {useEffect, useState} from 'react';
 
 import st from 'ryscott-st';
 import {helpers} from 'util';
-
+import sudoku from './sudoku.js';
 import Tile from './Tile.jsx';
 
 const isMobile = window.innerWidth < 720;
 
 const Board = function() {
   const [board, setBoard] = st.handleBoard = st.newState('board', useState(null));
-  const [sums, setSums] = st.newState('sums', useState({}));
-  const [size, setSize] = st.newState('size', useState(3));
-
-  const [spoiled, setSpoiled] = useState(getSpoiled(size));
+  const [tiles, setTiles] = st.newState('tiles', useState({}));
+  const [size, setSize] = st.newState('size', useState(9));
   const [solve, setSolve] = st.newState('solve', useState(false));
+  const [options, setOptions] = st.newState('options', useState(null));
 
   const tileSize = st.tileSize;
-
-  const info = {
-    3: 'Each number (1 - 9) is used one time.',
-    4: 'Each number is used up to 2 times. No number occurs twice in the same row or column.',
-    5: 'Each number is used up to 3 times. No number occurs twice in the same row or column.'
-  };
 
   var mountBoard = st.mountBoard = function(n) {
     var sz = n || size;
     var b = [];
+    var t = {};
 
-    var newSums = {};
+    var sud = sudoku.generate('hard', true);
+    var spoiled = sudoku.solve(sud);
+
     var rows = [];
     var cols = [];
-    var str = '';
 
     for (let i = 0; i < sz; i++) {
       b[i] = [];
 
-      let brick;
-
-      if (sz > 3) {
-        brick = helpers.rand(sz);
-      }
-
       for (let j = 0; j < sz; j++) {
-        if (!cols[i]) {
-          cols[i] = '';
-        }
+        var tile = {
+          answer: Number(spoiled[(sz * i) + j]),
+          candidates: ''
+        };
 
-        if (!rows[j]) {
-          rows[j] = '';
-        }
-
-        if (brick === j) {
-          b[i][j] = 'brick';
-          continue;
-        }
-
-        var num = helpers.rand(9) + 1;
-
-        if (cols[i].includes(num) ||
-            rows[j].includes(num) ||
-            sz === 3 && str.includes(num) ||
-            str.split(num)[sz - 2]) {
-          j--;
-          continue;
-        } else {
-          cols[i] += num;
-          rows[j] += num;
-          str += num;
-        }
-
-        if (!newSums['r' + i]) {
-          newSums['r' + i] = num;
-        } else {
-          newSums['r' + i] += num;
-        }
-
-        if (!newSums['b' + j]) {
-          newSums['b' + j] = num;
-        } else {
-          newSums['b' + j] += num;
-        }
-
-        b[i][j] = num;
+        b[i][j] = tile;
+        t[(i*9)+j] = tile;
       }
     }
 
-    setSums(newSums);
-    setSpoiled(getSpoiled(size));
-
     n && setSize(n);
     setBoard(b);
+    setTiles(t);
   };
 
   var renderBoard = function() {
@@ -97,70 +51,62 @@ const Board = function() {
 
     for (let i = 0; i < size; i++) {
       for (let j = 0; j < size; j++) {
-        let num = board[i][j];
+        let num = board[i][j].answer;
         let coords = {x: j, y: i};
-        let spoil = false;
 
-        let chk = spoiled.indexOf((size * i) + j);
-
-        if (chk !== -1) {
-          spoil = true;
-        }
-
-        rendered.push(<Tile key={i + '.' + j + '.' + num} coords={coords} spoil={spoil}/>);
+        rendered.push(<Tile key={i + '.' + j + '.' + num} id={(i*9)+j} coords={coords}/>);
       }
     }
 
     return rendered;
   };
 
-  var renderSums = function() {
+  var renderCandidates = function() {
     var rendered = [];
+    var cand = tiles[options].candidates.split('');
 
-    for (var key in sums) {
-      var pos = key[0];
-      var el, style;
+    for (let i = 1; i <= 9; i++) {
+      let on = false;
 
-      switch (pos) {
-        case 'r':
-          style = {top: (key[1]) * tileSize + 'px', height: tileSize + 'px'};
-          el = (<small key={key} className={pos + 'Sum v'} style={style}>{sums[key]}</small>);
-          break;
-        case 'b':
-          style = {left: (key[1]) * tileSize + 'px', width: tileSize + 'px'};
-          el = (<small key={key} className={pos + 'Sum h'} style={style}>{sums[key]}</small>);
-          break;
+      if (tiles[options].candidates.includes(i)) {
+        on = true;
       }
 
-      rendered.push(el);
+      var toggle = function(num) {
+        var newTiles = {...tiles};
+        var tile = {...newTiles[options]};
+
+        if (tile.candidates.includes(num)) {
+          tile.candidates = tile.candidates.replace(num, '');
+          tile.candidates.split('').sort().join();
+        } else {
+          tile.candidates += num;
+          tile.candidates.split('').sort().join();
+        }
+
+        newTiles[options] = tile;
+
+        setTiles(newTiles);
+      };
+
+      rendered.push(<div key={'candidate' + i} className={`candidateButton ${on && 'buttonOn'}`} onClick={()=>{toggle(i)}}>{i}</div>)
     }
 
     return rendered;
   };
 
   useEffect(mountBoard, []);
-  useEffect(()=>{}, [board]);
+  useEffect(()=>{}, [board, tiles]);
 
   return (
     <>
-    <small className='gameInfo'>{info[size]}<br/><br/>Unique solution is not guaranteed.</small>
     <div id='tiles' className='tiles h' style={{width: size * tileSize + 'px'}}>
+      {options !== null && <div className='candidateContainer h'>{renderCandidates()}</div>}
       {board && renderBoard()}
-      {renderSums()}
     </div>
     </>
 
   );
-};
-
-const getSpoiled = function(size) {
-  let spoiled = [];
-
-  for (var i = 0; i < size - 1; i++) {
-    spoiled.push(helpers.rand(size*size));
-  }
-
-  return spoiled;
 };
 
 export default Board;

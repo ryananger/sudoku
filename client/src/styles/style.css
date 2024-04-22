@@ -1,5 +1,5 @@
 :root {
-  --bg: #b9d3af;
+  --bg: #99c6e5;
   --brown: #86716a;
   --gold: #ffbc90;
   --salmon: #ff9d90;
@@ -29,7 +29,7 @@ html, body, #root, .app {
   width: 100%;
   font-family: Jost;
   background: radial-gradient(circle at bottom left, #d9baed66, transparent 20%), radial-gradient(circle at top right, #edddba9e, transparent);
-  background-color: #f9cde2;
+  background-color: #99c6e5;
   color: var(--darkText);
 }
 
@@ -115,12 +115,6 @@ a:visited {
   position: relative;
 }
 
-@media (max-width: 720px) {
-  .tiles {
-    left: -10px;
-  }
-}
-
 .tileContainer {
   aspect-ratio: 1;
   padding: 0;
@@ -132,25 +126,45 @@ a:visited {
 
 .tile {
   margin: 4px;
-  width: calc(100% - 8px);
+  width: calc(100% - 4px);
   aspect-ratio: 1;
-  border-radius: 12px;
+  border-radius: 4px;
   text-align: center;
   justify-content: center;
   padding: 0;
   background: var(--cream);
-  box-shadow: 0 2px 0 0 #d19494;
+  box-shadow: 0 1px 0 0 #a592a7;
   position: relative;
   overflow: hidden;
 }
 
-.brick {
-  background: #c7a6aa;
-  box-shadow: 0 2px 0 0 #9d7b7b;
+.candidateContainer {
+  position: absolute;
+  top: -60px;
+  width: 100%;
+  justify-content: center;
+  text-align: center;
 }
 
-.brick .woodgrain path {
-  fill: var(--trCream);
+.candidateButton {
+  color: var(--solveText);
+  cursor: pointer;
+  padding: 8px;
+}
+
+.buttonOn {
+  color: var(--darkText);
+}
+
+.candidates {
+  width: 90%;
+  position: absolute;
+  font-size: 16px;
+  line-break: anywhere;
+  pointer-events: none;
+  user-select: none;
+  color: var(--solveText);
+  justify-content: center;
 }
 
 input {
@@ -186,23 +200,6 @@ input[type=number] {
   fill: #d1949452;
 }
 
-.rSum,
-.bSum {
-  position: absolute;
-  width: 40px;
-  height: 40px;
-  text-align: center;
-  justify-content: center;
-}
-
-.rSum {
-  right: -40px;
-}
-
-.bSum {
-  bottom: -40px;
-}
-
 /* BUTTONS */
 
 .buttons {
@@ -216,7 +213,7 @@ input[type=number] {
   text-align: center;
   justify-content: center;
   margin: 0 4px;
-  border: 1px solid #ad6e8f85;
+  border: 1px solid #686a9145;
   border-radius: 4px;
   user-select: none;
 }

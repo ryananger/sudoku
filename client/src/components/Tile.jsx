@@ -4,14 +4,19 @@ import st from 'ryscott-st';
 
 import Grain from './Grain.jsx';
 
-const Tile = function({spoil, coords}) {
+const Tile = function({id, coords}) {
   const [board, setBoard] = st.handleBoard;
   const [{x, y}, setPos] = useState(coords);
-  const [num, setNum] = useState(board[y]?.[x]);
+  const [num, setNum] = useState(board[y]?.[x].answer);
   const [val, setVal] = useState('');
+  const [spoil] = useState(Math.random() < 0.4);
+
+  const candidates = st.tiles[id].candidates;
 
   const tileSize = st.tileSize;
-  const style = {top: y * tileSize + 'px', left: x * tileSize + 'px'};
+  const gapX = Math.floor(x/3);
+  const gapY = Math.floor(y/3);
+  const style = {top: ((gapY * 8) + (y * tileSize)) + 'px', left: (-8 + (gapX * 8) + (x * tileSize)) + 'px'};
 
   var handleChange = function(e) {
     if (Number(e.target.value)) {
@@ -21,32 +26,21 @@ const Tile = function({spoil, coords}) {
     if (e.key === 'Backspace') {
       setVal('');
     }
-  };
-
-  var handleTile = function() {
-    if (num === 'brick') {
-      return <div className='tile brick'><Grain/></div>;
-    } else {
-      return (
-        <div className='tile v' style={!spoil && st.solve ? {color: 'var(--solveText)'} : {}}>
-          <Grain/>
-          {(spoil || st.solve) && num}
-          {(!spoil && !st.solve) && <input type='number' value={val} onChange={handleChange} onKeyUp={handleChange}/>}
-        </div>
-      )
-    }
-  };
+  }
 
   useEffect(()=>{
     setPos(coords);
-    setNum(board[coords.y][coords.x]);
+    setNum(board[coords.y][coords.x].answer);
   }, [coords]);
-
-  if (num === -1) {return};
 
   return (
     <div className='tileContainer v' style={{...style, width: tileSize + 'px'}}>
-      {handleTile()}
+      <div className='tile v' style={!spoil && st.solve ? {color: 'var(--solveText)'} : {}} onClick={()=>{st.setOptions(id)}}>
+        <Grain/>
+        {!st.isMobile && !st.solve && !spoil && !val && <div className='candidates h'>{candidates}</div>}
+        {(spoil || st.solve) && num}
+        {(!spoil && !st.solve) && <input type='number' value={val} onChange={handleChange} onKeyUp={handleChange}/>}
+      </div>
     </div>
   );
 };
