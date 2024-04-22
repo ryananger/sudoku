@@ -37,7 +37,7 @@ const Tile = function({id, coords}) {
     <div className='tileContainer v' style={{...style, width: tileSize + 'px'}}>
       <div className='tile v' style={!spoil && st.solve ? {color: 'var(--solveText)'} : {}} onClick={()=>{st.setOptions(id)}}>
         <Grain/>
-        {!st.isMobile && !st.solve && !spoil && !val && <div className='candidates h'>{candidates}</div>}
+        {!st.solve && !spoil && !val && <div className='candidates h'>{candidates}</div>}
         {(spoil || st.solve) && num}
         {(!spoil && !st.solve) && <input type='number' value={val} onChange={handleChange} onKeyUp={handleChange}/>}
       </div>

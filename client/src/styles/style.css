@@ -167,6 +167,12 @@ a:visited {
   justify-content: center;
 }
 
+@media (max-width: 720px) {
+  .candidates {
+    font-size: 9px;
+  }
+}
+
 input {
   background: transparent;
   border: none;
