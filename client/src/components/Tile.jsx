@@ -35,7 +35,7 @@ const Tile = function({id, coords}) {
 
   return (
     <div className='tileContainer v' style={{...style, width: tileSize + 'px'}}>
-      <div className='tile v' style={!spoil && st.solve ? {color: 'var(--solveText)'} : {}} onClick={()=>{st.setOptions(id)}}>
+      <div className={`tile v ${spoil && 'spoil'}`} style={!spoil && st.solve ? {color: 'var(--solveText)'} : {}} onClick={()=>{st.setOptions(id)}}>
         <Grain/>
         {!st.solve && !spoil && !val && <div className='candidates h'>{candidates}</div>}
         {(spoil || st.solve) && num}

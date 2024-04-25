@@ -138,6 +138,10 @@ a:visited {
   overflow: hidden;
 }
 
+.spoil {
+  color: var(--darkSalmon);
+}
+
 .candidateContainer {
   position: absolute;
   top: -60px;
